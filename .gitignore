@@ -1,0 +1,17 @@
+# Python & venv
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+
+# Django statik & medya
+staticfiles/
+media/
+
+# ML modelleri (deploy sırasında script ile indirilecek)
+wifimodule/ml_models/
+
+# IDE / OS
+*.swp
+.DS_Store
