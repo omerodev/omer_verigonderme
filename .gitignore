@@ -1,17 +1,39 @@
-# Python & venv
+# Python bytecode / cache
 __pycache__/
 *.py[cod]
+*$py.class
+
+# Virtual environments
 venv/
 .venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Env vars
 .env
+.env.*
 
-# Django statik & medya
-staticfiles/
+# Django
+*.sqlite3
+db.sqlite3
 media/
+staticfiles/
+static/
 
-# ML modelleri (deploy sırasında script ile indirilecek)
+# ML models (we download these at deploy time)
 wifimodule/ml_models/
 
-# IDE / OS
-*.swp
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# OS files
 .DS_Store
+Thumbs.db
