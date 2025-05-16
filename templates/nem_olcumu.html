@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nem Ölçümü</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="content">
+    <h2>Nem Ölçümü</h2>
+    <p>Anlık Nem: <span id="currentHumidity">{{ latest_data }} %</span></p>
+
+    <!-- Grafik için canvas -->
+    <div>
+        <canvas id="humidityChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script>
+    const humidityCtx = document.getElementById('humidityChart').getContext('2d');
+    const humidityData = {
+        labels: [{% for data in all_data %}"{{ data.timestamp|date:"H:i:s" }}",{% endfor %}],
+        datasets: [{
+            label: 'Nem (%)',
+            data: [{% for data in all_data %}{{ data.humidity }},{% endfor %}],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: false
+        }]
+    };
+
+    const humidityConfig = {
+        type: 'line',
+        data: humidityData,
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    };
+
+    const humidityChart = new Chart(humidityCtx, humidityConfig);
+
+    setInterval(async () => {
+        const response = await fetch('/nem_olcumu/', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const result = await response.json();
+
+        if (result.new_data) {
+            location.reload();
+        }
+    }, 2000);
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+body {
+  text-align: center;
+  background-color: orange;
+  font-family: Arial, sans-serif;
+}
+
+.toolbar {
+  margin-bottom: 10px;
+}
+
+/* width/height kesinlikle kaldırıldı,
+   sadece stil (border, cursor vs.) kaldı */
+canvas {
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="range"],
+input[type="color"] {
+  margin-left: 5px;
+}
+
+
+.prediction {
+  margin-top: 1rem;
+  color: green;                   /* Yazı rengi yeşil */
+  font-size: 3em;               /* Yazı boyutunu biraz büyüt */
+}

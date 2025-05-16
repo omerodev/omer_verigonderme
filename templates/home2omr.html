@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Veri Gönder</title>
+</head>
+<body>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label for="text_input">Metin:</label>
+        <input type="text" name="text_input" id="text_input"><br><br>
+
+        <label for="sayi_input">Sayı:</label>
+        <input type="number" name="sayi_input" id="sayi_input"><br><br>
+
+        <label for="buton1">Buton 1:</label>
+        <input type="radio" name="button" id="buton1" value="buton1"><br>
+
+        <label for="buton2">Buton 2:</label>
+        <input type="radio" name="button" id="buton2" value="buton2"><br>
+
+        <label for="buton3">Buton 3:</label>
+        <input type="radio" name="button" id="buton3" value="buton3"><br><br>
+
+        <button type="submit">Onayla</button>
+    </form>
+
+    <p>Alınan Metin: {{ received_text }}</p>
+</body>
+</html>

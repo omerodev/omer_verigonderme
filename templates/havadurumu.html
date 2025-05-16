@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .weather-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            margin: 10px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            font-size: 4em;
+            margin: 10px 0;
+        }
+
+        .forecast-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .forecast-box {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            width: 150px;
+            text-align: center;
+        }
+
+        .forecast-box h4 {
+            margin: 10px 0;
+        }
+
+        .forecast-box .icon {
+            font-size: 3em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hava Durumu</h1>
+        <!-- Current Weather -->
+        <div class="weather-box">
+            <h2>Şu Anki Hava Durumu</h2>
+            <div class="icon">
+                <i class="{{ weather_icon }}"></i>
+            </div>
+            <p>Sıcaklık: {{ temperature }}°C</p>
+            <p>Rüzgar Hızı: {{ windspeed }} km/s</p>
+        </div>
+
+        <!-- Forecast -->
+        <h2>5 Günlük Tahmin</h2>
+        <div class="forecast-container">
+            {% for day in forecast %}
+            <div class="forecast-box">
+                <h4>{{ day.date }}</h4>
+                <div class="icon">
+                    <i class="{{ day.weather_icon }}"></i>
+                </div>
+                <p>Sıcaklık: {{ day.temperature }}°C</p>
+                <p>Rüzgar: {{ day.windspeed }} km/s</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzaklık Ölçümü</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="content">
+    <h2>Uzaklık Ölçümü</h2>
+    <p>Anlık Uzaklık: <span id="currentDistance">{{ latest_data }} cm</span></p>
+
+    <!-- Grafik için canvas -->
+    <div>
+        <canvas id="distanceChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('distanceChart').getContext('2d');
+    const data = {
+        labels: [{% for data in all_data %}"{{ data.timestamp|date:"H:i:s" }}",{% endfor %}],
+        datasets: [{
+            label: 'Uzaklık (cm)',
+            data: [{% for data in all_data %}{{ data.distance }},{% endfor %}],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+            fill: false
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    };
+
+    const distanceChart = new Chart(ctx, config);
+
+    // Yeni veri kontrolü için AJAX isteği gönderme
+    setInterval(async () => {
+        const response = await fetch('/uzaklik_olcumu/', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const result = await response.json();
+
+        if (result.new_data) {
+            location.reload();  // Yeni veri varsa sayfayı yeniler
+        }
+    }, 2000);  // Her 2 saniyede bir kontrol et
+</script>
+</body>
+</html>

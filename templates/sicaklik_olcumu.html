@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sıcaklık Ölçümü</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="content">
+    <h2>Sıcaklık Ölçümü</h2>
+    <p>Anlık Sıcaklık: <span id="currentTemperature">{{ latest_data }} °C</span></p>
+
+    <!-- Grafik için canvas -->
+    <div>
+        <canvas id="temperatureChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script>
+    const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+    const tempData = {
+        labels: [{% for data in all_data %}"{{ data.timestamp|date:"H:i:s" }}",{% endfor %}],
+        datasets: [{
+            label: 'Sıcaklık (°C)',
+            data: [{% for data in all_data %}{{ data.temperature }},{% endfor %}],
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2,
+            fill: false
+        }]
+    };
+
+    const tempConfig = {
+        type: 'line',
+        data: tempData,
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    };
+
+    const temperatureChart = new Chart(tempCtx, tempConfig);
+
+    setInterval(async () => {
+        const response = await fetch('/sicaklik_olcumu/', {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const result = await response.json();
+
+        if (result.new_data) {
+            location.reload();
+        }
+    }, 2000);
+</script>
+</body>
+</html>

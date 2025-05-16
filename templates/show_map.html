@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harita</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        /* Genel Sayfa Stili */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f7f7f7, #d3e9ff);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Başlık Stili */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #264653;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Harita Alanı Stili */
+        #map {
+            width: 90%;
+            max-width: 800px;
+            height: 500px;
+            border: 2px solid #2a9d8f;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Popup Stili */
+        .leaflet-popup-content {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2a9d8f;
+        }
+
+        .leaflet-popup-tip {
+            background-color: #2a9d8f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Son Konum Haritası</h1>
+    <div id="map"></div>
+    <script>
+        const latitude = {{ latitude }};
+        const longitude = {{ longitude }};
+
+        // Harita oluşturma
+        const map = L.map('map').setView([latitude, longitude], 13);
+
+        // OpenStreetMap Katmanı
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // İşaretleyici (Marker)
+        const marker = L.marker([latitude, longitude]).addTo(map);
+
+        // Nominatim Reverse Geocoding ile yer ismi alma
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+            .then(response => response.json())
+            .then(data => {
+                const placeName = data.display_name || "Bilinmeyen Yer";
+                marker.bindPopup(`<strong>Yer: ${placeName}</strong><br>Enlem: ${latitude}<br>Boylam: ${longitude}`).openPopup();
+            })
+            .catch(error => {
+                console.error('Yer ismi alınamadı:', error);
+                marker.bindPopup(`Enlem: ${latitude}<br>Boylam: ${longitude}`).openPopup();
+            });
+    </script>
+</body>
+</html>
