@@ -38,7 +38,7 @@ sqlparse==0.5.1
 sympy==1.14.0
 timm==1.0.15
 torch==2.2.2
-torchaudio==2.7.0
+torchaudio==2.2.2
 torchvision==0.17.2
 tqdm==4.67.1
 typing_extensions==4.13.2
